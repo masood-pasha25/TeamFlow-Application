@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TeamFlow Systems Engineering Specification</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 40px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        h1, h2, h3, h4 {
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 26px;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 18px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 16px;
+        }
+
+        h3 {
+            font-size: 15px;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: #475569;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border: 1px solid #cbd5e1;
+            font-size: 13px;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f8fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-get { background-color: #d1fae5; color: #065f46; }
+        .badge-post { background-color: #dbeafe; color: #1e40af; }
+        .badge-put { background-color: #fef3c7; color: #92400e; }
+        .badge-delete { background-color: #fee2e2; color: #991b1b; }
+
+        .diagram-container {
+            text-align: center;
+            margin: 24px 0;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            page-break-inside: avoid;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        .decision-card {
+            border-left: 4px solid #3b82f6;
+            background-color: #f0f9ff;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-radius: 0 8px 8px 0;
+            page-break-inside: avoid;
+        }
+
+        .decision-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #1e3a8a;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cover Page Header -->
+    <div style="text-align: center; margin-top: 60px; margin-bottom: 80px;">
+        <div style="display: inline-block; width: 60px; height: 60px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 12px; color: white; font-size: 32px; font-weight: bold; line-height: 60px; margin-bottom: 20px;">T</div>
+        <h1 style="border-bottom: none; margin-bottom: 10px; font-size: 32px;">TeamFlow Systems</h1>
+        <p style="font-size: 16px; font-weight: 500; color: #64748b;">Unified Project Management & Incident Response Platform</p>
+        <div style="margin-top: 40px; font-size: 13px; color: #64748b;">
+            <p><strong>Systems Engineering Specification & Design Document</strong></p>
+            <p>Prepared for: Technical Evaluation Board</p>
+            <p>Date: July 2026</p>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Section 1 -->
+    <h2>1. System Architecture</h2>
+    <p>
+        TeamFlow is designed as a modular monolithic system implementing a layered architectures style. 
+        This simplifies deployment, local verification, and debugging. The application components communicate synchronously 
+        through in-process method invocations, backed by relational transaction guarantees.
+    </p>
+
+    <div class="diagram-container">
+        <h3>Application Architecture Diagram</h3>
+        <!-- Architectural SVG diagram -->
+        <svg width="600" height="320" viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg">
+            <!-- Box Styles -->
+            <style>
+                .box-ui { fill: #eff6ff; stroke: #3b82f6; stroke-width: 2; }
+                .box-back { fill: #faf5ff; stroke: #a855f7; stroke-width: 2; }
+                .box-db { fill: #f0fdf4; stroke: #22c55e; stroke-width: 2; }
+                .lbl { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; fill: #0f172a; text-anchor: middle; }
+                .lbl-sub { font-family: 'Inter', sans-serif; font-size: 10px; fill: #64748b; text-anchor: middle; }
+                .arrow { stroke: #64748b; stroke-width: 1.5; fill: #64748b; }
+            </style>
+            <!-- UI Layer -->
+            <rect x="200" y="20" width="200" height="50" rx="6" class="box-ui"/>
+            <text x="300" y="42" class="lbl">Vanilla UI Dashboard</text>
+            <text x="300" y="58" class="lbl-sub">HTML5 / CSS3 / ES6 JS</text>
+
+            <!-- Arrow Down -->
+            <path d="M300 70 L300 100" class="arrow" marker-end="url(#arrowhead)"/>
+
+            <!-- Backend Monolith -->
+            <rect x="50" y="110" width="500" height="110" rx="8" class="box-back"/>
+            <text x="300" y="130" style="font-size: 14px; font-weight: 700; fill: #581c87; text-anchor: middle;">Spring Boot Monolith REST API</text>
+
+            <!-- Controllers -->
+            <rect x="70" y="150" width="140" height="50" rx="4" fill="#ffffff" stroke="#d8b4fe"/>
+            <text x="140" y="172" class="lbl">REST Controllers</text>
+            <text x="140" y="188" class="lbl-sub">Resource Endpoints</text>
+
+            <!-- Services -->
+            <rect x="230" y="150" width="140" height="50" rx="4" fill="#ffffff" stroke="#d8b4fe"/>
+            <text x="300" y="172" class="lbl">Business Services</text>
+            <text x="300" y="188" class="lbl-sub">Validations & Workflows</text>
+
+            <!-- Repositories -->
+            <rect x="390" y="150" width="140" height="50" rx="4" fill="#ffffff" stroke="#d8b4fe"/>
+            <text x="460" y="172" class="lbl">JPA Repositories</text>
+            <text x="460" y="188" class="lbl-sub">Spring Data JPA</text>
+
+            <!-- Arrow Down -->
+            <path d="M300 220 L300 250" class="arrow"/>
+
+            <!-- Database -->
+            <rect x="180" y="260" width="240" height="50" rx="6" class="box-db"/>
+            <text x="300" y="282" class="lbl">Relational SQL Database</text>
+            <text x="300" y="298" class="lbl-sub">H2 (In-Memory) / MySQL Dialect</text>
+        </svg>
+    </div>
+
+    <!-- Section 2 -->
+    <h2>2. Domain Model (Database ERD)</h2>
+    <p>
+        The relational database schema is designed with strong referential integrity, unique index validation constraints, and 
+        structured mapping models representing workspaces, tasks, incident records, reviews, and event notifications.
+    </p>
+
+    <div class="diagram-container">
+        <h3>Entity Relationship Diagram (ERD)</h3>
+        <!-- Database ERD SVG -->
+        <svg width="600" height="340" viewBox="0 0 600 340" xmlns="http://www.w3.org/2000/svg">
+            <style>
+                .tbl-box { fill: #f8fafc; stroke: #475569; stroke-width: 1.5; }
+                .tbl-hdr { fill: #475569; }
+                .tbl-title { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; fill: white; }
+                .tbl-text { font-family: 'Monaco', 'Courier New', monospace; font-size: 9px; fill: #334155; }
+                .rel-line { stroke: #64748b; stroke-width: 1.2; fill: none; stroke-dasharray: 4 2; }
+            </style>
+
+            <!-- User Table -->
+            <rect x="20" y="20" width="130" height="80" rx="4" class="tbl-box"/>
+            <rect x="20" y="20" width="130" height="20" class="tbl-hdr"/>
+            <text x="30" y="34" class="tbl-title">USERS</text>
+            <text x="30" y="55" class="tbl-text">PK | id: Long</text>
+            <text x="30" y="70" class="tbl-text">     name: String</text>
+            <text x="30" y="85" class="tbl-text">     role: Enum</text>
+
+            <!-- Project Table -->
+            <rect x="230" y="20" width="140" height="80" rx="4" class="tbl-box"/>
+            <rect x="230" y="20" width="140" height="20" class="tbl-hdr"/>
+            <text x="240" y="34" class="tbl-title">PROJECTS</text>
+            <text x="240" y="55" class="tbl-text">PK | id: Long</text>
+            <text x="240" y="70" class="tbl-text">     project_name: String</text>
+            <text x="240" y="85" class="tbl-text">     created_date: Date</text>
+
+            <!-- Project Tasks (Many-to-Many Join) -->
+            <rect x="440" y="20" width="140" height="65" rx="4" class="tbl-box"/>
+            <rect x="440" y="20" width="140" height="20" class="tbl-hdr"/>
+            <text x="450" y="34" class="tbl-title">PROJECT_TASKS</text>
+            <text x="450" y="52" class="tbl-text">FK | project_id: Long</text>
+            <text x="450" y="68" class="tbl-text">FK | task_id: Long</text>
+
+            <!-- Task Table -->
+            <rect x="230" y="140" width="140" height="110" rx="4" class="tbl-box"/>
+            <rect x="230" y="140" width="140" height="20" class="tbl-hdr"/>
+            <text x="240" y="154" class="tbl-title">TASKS</text>
+            <text x="240" y="175" class="tbl-text">PK | id: Long</text>
+            <text x="240" y="190" class="tbl-text">     title: String</text>
+            <text x="240" y="205" class="tbl-text">     status: Enum</text>
+            <text x="240" y="220" class="tbl-text">     priority: Enum</text>
+            <text x="240" y="235" class="tbl-text">FK | assigned_user_id</text>
+
+            <!-- Task Dependency -->
+            <rect x="440" y="140" width="140" height="65" rx="4" class="tbl-box"/>
+            <rect x="440" y="140" width="140" height="20" class="tbl-hdr"/>
+            <text x="450" y="154" class="tbl-title">TASK_DEPENDENCIES</text>
+            <text x="450" y="172" class="tbl-text">FK | task_id: Long</text>
+            <text x="450" y="188" class="tbl-text">FK | depends_on_task_id</text>
+
+            <!-- Incident Table -->
+            <rect x="20" y="230" width="130" height="95" rx="4" class="tbl-box"/>
+            <rect x="20" y="230" width="130" height="20" class="tbl-hdr"/>
+            <text x="30" y="244" class="tbl-title">INCIDENTS</text>
+            <text x="30" y="265" class="tbl-text">PK | id: Long</text>
+            <text x="30" y="280" class="tbl-text">     severity: Enum</text>
+            <text x="30" y="295" class="tbl-text">     status: Enum</text>
+            <text x="30" y="310" class="tbl-text">FK | reporter_id</text>
+
+            <!-- Review Table -->
+            <rect x="440" y="230" width="140" height="95" rx="4" class="tbl-box"/>
+            <rect x="440" y="230" width="140" height="20" class="tbl-hdr"/>
+            <text x="450" y="244" class="tbl-title">REVIEWS</text>
+            <text x="450" y="265" class="tbl-text">PK | id: Long</text>
+            <text x="450" y="280" class="tbl-text">FK | task_id: Long</text>
+            <text x="450" y="295" class="tbl-text">FK | reviewer_id</text>
+            <text x="450" y="310" class="tbl-text">     status: Enum</text>
+
+            <!-- Lines (Relationships) -->
+            <!-- Users to Tasks -->
+            <path d="M150 60 L230 195" class="rel-line"/>
+            <!-- Projects to Join -->
+            <path d="M370 60 L440 40" class="rel-line"/>
+            <!-- Tasks to Join -->
+            <path d="M370 195 L440 60" class="rel-line"/>
+            <!-- Tasks to Dependencies -->
+            <path d="M370 210 L440 172" class="rel-line"/>
+            <!-- Users to Incidents -->
+            <path d="M85 100 L85 230" class="rel-line"/>
+        </svg>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Section 3 -->
+    <h2>3. API Overview</h2>
+    <p>The Monolith backend exposes the following REST resources for frontend bindings:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Resource Endpoint</th>
+                <th>HTTP Method</th>
+                <th>Access Scope</th>
+                <th>Functional Action / Payload</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>/api/users</code></td>
+                <td><span class="badge badge-get">GET</span></td>
+                <td>Viewer +</td>
+                <td>Retrieves all registered users & profiles.</td>
+            </tr>
+            <tr>
+                <td><code>/api/projects</code></td>
+                <td><span class="badge badge-get">GET</span>, <span class="badge badge-post">POST</span></td>
+                <td>Manager +</td>
+                <td>Lists and registers project entities.</td>
+            </tr>
+            <tr>
+                <td><code>/api/tasks</code></td>
+                <td><span class="badge badge-get">GET</span>, <span class="badge badge-post">POST</span></td>
+                <td>Developer +</td>
+                <td>Manages active board tasks.</td>
+            </tr>
+            <tr>
+                <td><code>/api/tasks/{id}</code></td>
+                <td><span class="badge badge-put">PUT</span>, <span class="badge badge-delete">DELETE</span></td>
+                <td>Developer / Mgr</td>
+                <td>Updates task status (with dependency check) or deletes task.</td>
+            </tr>
+            <tr>
+                <td><code>/api/tasks/{id}/dependencies</code></td>
+                <td><span class="badge badge-post">POST</span></td>
+                <td>Developer +</td>
+                <td>Adds a task block (checks circular references).</td>
+            </tr>
+            <tr>
+                <td><code>/api/tasks/dependencies</code></td>
+                <td><span class="badge badge-get">GET</span></td>
+                <td>Viewer +</td>
+                <td>Lists dependency constraints for reports tab.</td>
+            </tr>
+            <tr>
+                <td><code>/api/reviews/submit</code></td>
+                <td><span class="badge badge-post">POST</span></td>
+                <td>Developer +</td>
+                <td>Submits task for review (sets task state to UNDER_REVIEW).</td>
+            </tr>
+            <tr>
+                <td><code>/api/reviews/{id}/approve</code></td>
+                <td><span class="badge badge-post">POST</span></td>
+                <td>Reviewer / Mgr</td>
+                <td>Approves task completion and unblocks downstream tasks.</td>
+            </tr>
+            <tr>
+                <td><code>/api/reviews/{id}/unavailable</code></td>
+                <td><span class="badge badge-post">POST</span></td>
+                <td>System / Mgr</td>
+                <td>Triggers reviewer unavailable fallback re-assignment.</td>
+            </tr>
+            <tr>
+                <td><code>/api/incidents</code></td>
+                <td><span class="badge badge-get">GET</span>, <span class="badge badge-post">POST</span></td>
+                <td>Developer +</td>
+                <td>Logs and tracks active production incidents.</td>
+            </tr>
+            <tr>
+                <td><code>/api/notifications/{userId}</code></td>
+                <td><span class="badge badge-get">GET</span></td>
+                <td>Own Profile</td>
+                <td>Retrieves alerts feed for acting user.</td>
+            </tr>
+            <tr>
+                <td><code>/api/notifications/check-deadlines</code></td>
+                <td><span class="badge badge-post">POST</span></td>
+                <td>All</td>
+                <td>Manual trigger for daily task deadline reminder scans.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- Section 4 -->
+    <h2>4. Design Decisions Log</h2>
+    <p>
+        The table below documents key architectural decisions, tradeoffs, and justifications in accordance with the project criteria:
+    </p>
+
+    <div class="decision-card">
+        <div class="decision-title">Monolith Architecture vs. Microservices</div>
+        <p>
+            <strong>Chosen:</strong> Monolith.<br>
+            <strong>Rationale:</strong> Since this is a unified platform replacing fragmented tools, a monolith facilitates easy deployment, 
+            rapid development, simple debugging, and strict transaction control using simple foreign key join tables. 
+            Microservices would introduce network overhead, eventual consistency complexities, distributed transactions, and complicated API gateways.
+        </p>
+    </div>
+
+    <div class="decision-card">
+        <div class="decision-title">SQL Database (H2/MySQL) vs. NoSQL (MongoDB)</div>
+        <p>
+            <strong>Chosen:</strong> SQL (MySQL/H2 dialect).<br>
+            <strong>Rationale:</strong> The platform data model is highly structured with clear relational links (e.g. many-to-many project assignments, self-referencing task dependencies). 
+            SQL databases ensure strict referential integrity (foreign keys) and ACID transaction support. MongoDB is schema-less and ill-suited for complex joins and cycle-detection lookups.
+        </p>
+    </div>
+
+    <div class="decision-card">
+        <div class="decision-title">Synchronous Communication vs. Event-Driven Messaging</div>
+        <p>
+            <strong>Chosen:</strong> Synchronous (REST/In-Process Service calls).<br>
+            <strong>Rationale:</strong> Simplifies business logic workflows. In-memory validation cascades (e.g., blocking tasks immediately if prerequisites are not completed, updating review status) happen instantly, preventing dirty reads. Event-driven architectures (like Kafka or RabbitMQ) introduce eventual consistency and complexity unnecessary for a core monolith.
+        </p>
+    </div>
+
+    <div class="decision-card">
+        <div class="decision-title">Local/Embedded File Storage vs. AWS S3 Cloud Storage</div>
+        <p>
+            <strong>Chosen:</strong> Local/In-Database Blob Storage (Fallback to S3).<br>
+            <strong>Rationale:</strong> For grading and demo portability, attachments are stored directly in-database as Lob binaries or in the local file directory. This keeps the application self-contained. For production scaling, this easily abstracts to Amazon S3 by overriding file storage configuration.
+        </p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Section 5 -->
+    <h2>5. Advanced Production Scenarios</h2>
+    <p>
+        For enterprise scaling, the TeamFlow platform design is ready to transition to the following architectures:
+    </p>
+
+    <h3>Offline-First Capability</h3>
+    <p>
+        To support offline use, the client dashboard can be wrapped as a **Progressive Web App (PWA)** using **Service Workers** to intercept requests and cache pages. 
+        A local SQLite database (in-browser via **IndexedDB**) stores changes offline. When connectivity is restored, the Service Worker plays back queued REST API calls, 
+        running a reconciliation protocol (with last-write-wins rules or conflict review cards) to merge tasks.
+    </p>
+
+    <h3>High Scale & Low Cost</h3>
+    <p>
+        To scale cost-effectively:
+        1. Expose read operations through a caching layer like **Redis** (caching dashboard stats and notification feeds).
+        2. Leverage static page hosting on a Content Delivery Network (CDN) like Cloudflare or AWS CloudFront for the frontend shell, reducing CPU load on the backend.
+        3. Run the Spring Boot API containerized on **AWS ECS Fargate** with auto-scaling triggers, allowing the app to scale down to zero/minimum containers during off-hours, saving cloud cost.
+    </p>
+
+    <h3>Multi-Region Deployment</h3>
+    <p>
+        For international corporate compliance and latency:
+        1. Deploy the backend API instances to multiple AWS regions (e.g., US-East, EU-Central, AP-South) managed by **Route 53 latency-based routing**.
+        2. Deploy **Amazon Aurora Global Database** (MySQL-compatible) with multi-region active-passive replication. Write requests are routed back to the primary region, while local reads are served instantly from the nearest regional replica.
+    </p>
+
+</body>
+</html>

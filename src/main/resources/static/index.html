@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeamFlow — Unified Work Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand" id="brandHeader" style="cursor: pointer;">
+                <img src="logo.png" alt="TeamFlow Logo" style="height: 38px; border-radius: 6px;">
+                <span>TeamFlow</span>
+            </div>
+            
+            <nav>
+                <div class="nav-section-title">Workspace</div>
+                <ul class="nav-links">
+                    <li><a class="nav-link active" data-tab="dashboard-tab">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                        Dashboard</a>
+                    </li>
+                    <li><a class="nav-link" data-tab="kanban-tab">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        Kanban Board</a>
+                    </li>
+                    <li><a class="nav-link" data-tab="reviews-tab">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Review Console</a>
+                    </li>
+                    <li><a class="nav-link" data-tab="incidents-tab">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        Incident Logs</a>
+                    </li>
+                    <li><a class="nav-link" data-tab="reports-tab">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+                        Reports & Audit</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Active Switcher Context -->
+            <div class="profile-switcher">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 34px; height: 34px; border-radius: 50%; background-color: var(--accent-blue-glow); color: var(--accent-blue); display: flex; align-items: center; justify-content: center; font-weight: bold; border: 1px solid var(--border-color);" id="profileAvatar">U</div>
+                    <div style="overflow: hidden; flex-grow: 1;">
+                        <div id="profileName" style="font-size: 13px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; color: var(--text-primary);">User Name</div>
+                        <div id="profileRole" style="font-size: 11px; color: var(--text-secondary);">Role</div>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="btn-secondary" style="width: 100%; font-size: 12px; padding: 6px 12px; margin-top: 12px; justify-content: center;">Log Out</button>
+            </div>
+        </aside>
+
+        <!-- Main Body Content -->
+        <main class="main-content">
+            <!-- Header bar -->
+            <header class="top-header">
+                <h2 id="currentTabTitle" class="header-title">Dashboard Overview</h2>
+                <div class="header-actions">
+                    <button id="triggerDeadlinesBtn" class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">Trigger Deadline Alerts</button>
+                    <div id="bellBtn" class="notification-bell">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                        <span id="unreadCount" class="bell-badge" style="display: none;">0</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- Banner alerting blocked tasks -->
+                <div id="blockedTaskBanner" class="alert-banner" style="display: none;">
+                    <span>⚠️ <strong>System Alert:</strong> You have blocked dependencies. Check the Kanban Board or Reports tab.</span>
+                    <button class="alert-banner-close" onclick="document.getElementById('blockedTaskBanner').style.display='none'">×</button>
+                </div>
+
+                <!-- TAB 1: DASHBOARD -->
+                <section id="dashboard-tab" class="page-tab active">
+                    <!-- Metrics grid -->
+                    <div class="metrics-grid">
+                        <div class="metric-card blue">
+                            <div class="metric-title">Total Tasks</div>
+                            <div id="metricTotalTasks" class="metric-value">0</div>
+                        </div>
+                        <div class="metric-card amber">
+                            <div class="metric-title">In Progress</div>
+                            <div id="metricInProgressTasks" class="metric-value">0</div>
+                        </div>
+                        <div class="metric-card purple">
+                            <div class="metric-title">Pending Reviews</div>
+                            <div id="metricPendingReviews" class="metric-value">0</div>
+                        </div>
+                        <div class="metric-card emerald">
+                            <div class="metric-title">Active Incidents</div>
+                            <div id="metricActiveIncidents" class="metric-value">0</div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-details">
+                        <!-- Left Panel: Recent Work status -->
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title">Active Projects</h3>
+                                <button id="addProjectBtn" class="btn-primary" style="padding: 6px 12px; font-size: 12px;">+ New Project</button>
+                            </div>
+                            <div id="dashboardProjectsList" class="project-list">
+                                <!-- Loaded dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Alerts & Notifications log -->
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title">Recent Unread Alerts</h3>
+                            </div>
+                            <div id="dashboardNotificationsList" class="project-list">
+                                <!-- Loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: KANBAN -->
+                <section id="kanban-tab" class="page-tab">
+                    <div class="panel-header" style="margin-bottom: 24px;">
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <h3 class="panel-title" style="font-size: 18px;">Sprint Taskboard</h3>
+                            <select id="projectFilter" class="profile-select" style="width: 200px;">
+                                <option value="all">All Projects</option>
+                            </select>
+                        </div>
+                        <button id="addTaskBtn" class="btn-primary">+ Create Task</button>
+                    </div>
+
+                    <div class="kanban-board">
+                        <div class="kanban-lane" data-status="CREATED">
+                            <div class="lane-title">Created <span id="count-CREATED" class="lane-count">0</span></div>
+                            <div class="lane-cards" id="lane-CREATED"></div>
+                        </div>
+                        <div class="kanban-lane" data-status="ASSIGNED">
+                            <div class="lane-title">Assigned <span id="count-ASSIGNED" class="lane-count">0</span></div>
+                            <div class="lane-cards" id="lane-ASSIGNED"></div>
+                        </div>
+                        <div class="kanban-lane" data-status="IN_PROGRESS">
+                            <div class="lane-title">In Progress <span id="count-IN_PROGRESS" class="lane-count">0</span></div>
+                            <div class="lane-cards" id="lane-IN_PROGRESS"></div>
+                        </div>
+                        <div class="kanban-lane" data-status="UNDER_REVIEW">
+                            <div class="lane-title">Under Review <span id="count-UNDER_REVIEW" class="lane-count">0</span></div>
+                            <div class="lane-cards" id="lane-UNDER_REVIEW"></div>
+                        </div>
+                        <div class="kanban-lane" data-status="COMPLETED">
+                            <div class="lane-title">Completed <span id="count-COMPLETED" class="lane-count">0</span></div>
+                            <div class="lane-cards" id="lane-COMPLETED"></div>
+                        </div>
+                        <div class="kanban-lane" data-status="BLOCKED">
+                            <div class="lane-title">Blocked <span id="count-BLOCKED" class="lane-count">0</span></div>
+                            <div class="lane-cards" id="lane-BLOCKED"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 3: REVIEWS -->
+                <section id="reviews-tab" class="page-tab">
+                    <div class="panel" style="margin-bottom: 24px;">
+                        <div class="panel-header">
+                            <h3 class="panel-title">Pending Tasks Under Review</h3>
+                        </div>
+                        <div id="reviewsConsoleList" class="review-console">
+                            <!-- Loaded dynamically -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 4: INCIDENTS -->
+                <section id="incidents-tab" class="page-tab">
+                    <div class="dashboard-details">
+                        <!-- Left Panel: Create Incident Form -->
+                        <div class="panel">
+                            <div class="modal-title" style="margin-bottom: 20px;">Report Production Incident</div>
+                            <form id="incidentForm">
+                                <div class="form-group">
+                                    <label for="incTitle">Incident Summary</label>
+                                    <input type="text" id="incTitle" class="form-control" placeholder="e.g. Memory leak in API gateway container" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="incDesc">Detailed Investigation Log / Stacktrace</label>
+                                    <textarea id="incDesc" class="form-control" rows="4" placeholder="Provide raw logs or description..." required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="incSeverity">Severity</label>
+                                    <select id="incSeverity" class="form-control">
+                                        <option value="LOW">Low (Non-blocking bug)</option>
+                                        <option value="MEDIUM">Medium (Degraded performance)</option>
+                                        <option value="HIGH">High (Key feature failing)</option>
+                                        <option value="CRITICAL">Critical (System downtime)</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-primary" style="width: 100%;">Raise Incident & Trigger Notifications</button>
+                            </form>
+                        </div>
+
+                        <!-- Right Panel: Live Incidents log -->
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title">Active Incident Feed</h3>
+                            </div>
+                            <div id="incidentsFeedList" class="incident-list">
+                                <!-- Loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 5: REPORTS & AUDIT -->
+                <section id="reports-tab" class="page-tab">
+                    <div class="reports-container">
+                        <!-- Project Metrics Summary -->
+                        <div class="report-section">
+                            <h3>Project Completion Metrics</h3>
+                            <table class="report-table">
+                                <thead>
+                                    <tr>
+                                        <th>Project Name</th>
+                                        <th>Total Tasks</th>
+                                        <th>Completed</th>
+                                        <th>Completion %</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportProjectsBody">
+                                    <!-- Dynamic -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Blocked Dependencies Log -->
+                        <div class="report-section">
+                            <h3>Blocked Tasks Dependency Matrix</h3>
+                            <table class="report-table">
+                                <thead>
+                                    <tr>
+                                        <th>Blocked Task</th>
+                                        <th>Assigned Developer</th>
+                                        <th>Pre-requisite Task</th>
+                                        <th>Pre-requisite Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportDependenciesBody">
+                                    <!-- Dynamic -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Right Notifications Drawer -->
+        <div id="notificationDrawer" class="notification-drawer">
+            <div class="drawer-header">
+                <span class="drawer-title">Alert notifications</span>
+                <span id="drawerCloseBtn" style="cursor: pointer; font-size: 20px; font-weight: bold;">×</span>
+            </div>
+            <div id="drawerContentList" class="drawer-content">
+                <!-- Notifications loaded dynamically -->
+            </div>
+        </div>
+
+        <!-- Create Task Modal -->
+        <div id="taskModal" class="modal-overlay">
+            <div class="modal-content">
+                <button class="modal-close" id="closeTaskModalBtn">&times;</button>
+                <div class="modal-title" id="taskModalTitle">Create Task</div>
+                <form id="taskForm">
+                    <input type="hidden" id="taskIdField">
+                    <div class="form-group">
+                        <label for="taskTitle">Title</label>
+                        <input type="text" id="taskTitle" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDesc">Description</label>
+                        <textarea id="taskDesc" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskPriority">Priority</label>
+                        <select id="taskPriority" class="form-control">
+                            <option value="LOW">Low</option>
+                            <option value="MEDIUM" selected>Medium</option>
+                            <option value="HIGH">High</option>
+                            <option value="CRITICAL">Critical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDueDate">Due Date</label>
+                        <input type="date" id="taskDueDate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="taskAssignee">Assignee</label>
+                        <select id="taskAssignee" class="form-control">
+                            <option value="">Unassigned</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskProjects">Associated Projects</label>
+                        <select id="taskProjects" class="form-control" multiple style="height: 60px;">
+                            <!-- Load projects -->
+                        </select>
+                    </div>
+                    <div class="form-group" id="dependencyGroup">
+                        <label for="taskDependencies">Block Task Until Prerequisite Finishes</label>
+                        <select id="taskDependencies" class="form-control" multiple style="height: 60px;">
+                            <!-- Load other tasks -->
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelTaskBtn">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Task</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Project Modal -->
+        <div id="projectModal" class="modal-overlay">
+            <div class="modal-content">
+                <button class="modal-close" id="closeProjectModalBtn">&times;</button>
+                <div class="modal-title">Create New Project</div>
+                <form id="projectForm">
+                    <div class="form-group">
+                        <label for="projName">Project Name</label>
+                        <input type="text" id="projName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projDesc">Description</label>
+                        <textarea id="projDesc" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelProjectBtn">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Project</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Feedback Modal for review rejection -->
+        <div id="rejectModal" class="modal-overlay">
+            <div class="modal-content">
+                <button class="modal-close" id="closeRejectModalBtn">&times;</button>
+                <div class="modal-title">Provide Rejection Feedback</div>
+                <form id="rejectForm">
+                    <input type="hidden" id="rejectReviewIdField">
+                    <div class="form-group">
+                        <label for="rejectFeedbackText">Reviewer Notes (Changes Requested)</label>
+                        <textarea id="rejectFeedbackText" class="form-control" rows="4" required placeholder="e.g. Please optimize database query to prevent N+1 queries."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelRejectBtn">Cancel</button>
+                        <button type="submit" class="btn-primary" style="background: var(--status-blocked);">Reject & Request Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Container overlay (Sign In / Sign Up / Forgot Password) -->
+    <div id="authContainer" class="auth-overlay">
+        <!-- Sign In Card -->
+        <div id="signInCard" class="auth-card active">
+            <div class="auth-header">
+                <img src="logo.png" alt="TeamFlow Logo" class="auth-logo">
+                <h3>Sign In to TeamFlow</h3>
+                <p>Access your project workspace and responds feed</p>
+            </div>
+            <div id="loginAlert" style="display: none; padding: 10px; background-color: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; color: var(--status-blocked); font-size: 13px; font-weight: 500; margin-bottom: 16px; text-align: center;">Invalid email or password.</div>
+            <form id="signInForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" class="form-control" required placeholder="e.g. masood@teamflow.com" value="masood@teamflow.com">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-control" required placeholder="••••••••" value="password123">
+                </div>
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                    <a href="#" id="toForgotBtn" style="font-size: 13px; color: var(--accent-blue); text-decoration: none; font-weight: 500;">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px;">Sign In</button>
+                <div class="auth-footer" style="text-align: center; margin-top: 20px; font-size: 13px; color: var(--text-secondary);">
+                    Don't have an account? <a href="#" id="toSignUpBtn" style="color: var(--accent-blue); text-decoration: none; font-weight: 600;">Create Account</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sign Up Card -->
+        <div id="signUpCard" class="auth-card">
+            <div class="auth-header">
+                <img src="logo.png" alt="TeamFlow Logo" class="auth-logo">
+                <h3>Create Account</h3>
+                <p>Register a new account on your development board</p>
+            </div>
+            <div id="signupAlert" style="display: none; padding: 10px; background-color: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; color: var(--status-blocked); font-size: 13px; font-weight: 500; margin-bottom: 16px; text-align: center;">Account creation failed.</div>
+            <form id="signUpForm">
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" class="form-control" required placeholder="e.g. Vignesh Dev">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email Address</label>
+                    <input type="email" id="registerEmail" class="form-control" required placeholder="e.g. vignesh@teamflow.com">
+                </div>
+                <div class="form-group">
+                    <label for="registerRole">Workspace Role</label>
+                    <select id="registerRole" class="form-control" required>
+                        <option value="DEVELOPER" selected>Developer</option>
+                        <option value="MANAGER">Manager</option>
+                        <option value="ADMIN">Admin</option>
+                        <option value="VIEWER">Viewer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" class="form-control" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px;">Create Account</button>
+                <div class="auth-footer" style="text-align: center; margin-top: 20px; font-size: 13px; color: var(--text-secondary);">
+                    Already have an account? <a href="#" id="toSignInBtn" style="color: var(--accent-blue); text-decoration: none; font-weight: 600;">Sign In</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Forgot Password Card -->
+        <div id="forgotCard" class="auth-card">
+            <div class="auth-header">
+                <img src="logo.png" alt="TeamFlow Logo" class="auth-logo">
+                <h3>Reset Password</h3>
+                <p>Provide your email to receive recovery instructions</p>
+            </div>
+            <div id="forgotAlert" style="display: none; padding: 10px; background-color: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; color: var(--status-completed); font-size: 13px; font-weight: 500; margin-bottom: 16px; text-align: center;">Reset instructions sent.</div>
+            <form id="forgotForm">
+                <div class="form-group">
+                    <label for="forgotEmail">Email Address</label>
+                    <input type="email" id="forgotEmail" class="form-control" required placeholder="e.g. masood@teamflow.com">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px; margin-bottom: 12px;">Submit Recovery Request</button>
+                <button type="button" class="btn-secondary" id="backToSignInBtn" style="width: 100%; justify-content: center; padding: 12px;">Back to Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Full-screen Tagline Animation Splash Overlay -->
+    <div id="taglineSplash" class="splash-overlay" style="display: none;">
+        <div class="splash-content">
+            <img src="logo.png" alt="TeamFlow Logo" class="splash-logo">
+            <h1 class="splash-title">TeamFlow</h1>
+            <p class="splash-tagline">Collaborate. Achieve.</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
