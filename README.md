@@ -6,25 +6,37 @@ TeamFlow is a unified collaboration and software lifecycle management platform d
 
 To build and run the application, ensure you have **Java 17+** (Java 26.0.1 recommended) installed.
 
-1. **Clone/Open Workspace**
-   Change to the project root directory.
-
-2. **Compile and Run the Application**
+1. **Compile and Run the Application**
    Run the embedded Maven wrapper command to launch the Spring Boot app:
    ```bash
    ./mvnw spring-boot:run
    ```
 
-3. **Access the Dashboard**
+2. **Access the Dashboard**
    Open your browser and navigate to:
-   - Dashboard UI: [http://localhost:8080/index.html](http://localhost:8080/index.html) or [http://localhost:8080/](http://localhost:8080/)
+   - Dashboard UI: [http://localhost:8080/](http://localhost:8080/)
    - H2 Database Web Console: [http://localhost:8080/h2-console](http://localhost:8080/h2-console) (JDBC URL: `jdbc:h2:mem:teamflowdb`, Username: `sa`, Password: *blank*)
+
+3. **Log In (Seeded Credentials)**
+   The system boots to a secure, glassmorphic sign-in page. You can log in using one of the pre-seeded team profiles (password for all is `password123`):
+   - **Admin Profile:** `masood@teamflow.com` | `password123`
+   - **Manager Profile:** `rahul@teamflow.com` | `password123`
+   - **Developer Profile:** `vignesh@teamflow.com` | `password123`
+   - **Viewer Profile:** `rohan@teamflow.com` | `password123`
 
 4. **Run Unit & Integration Tests**
    To execute the validation test suite:
    ```bash
    ./mvnw clean test
    ```
+
+---
+
+## 🎨 Design Elements & Animations
+
+- **Corporate Branding Logo:** The sidebar header and login screens utilize the custom-generated TeamFlow corporate logo (featuring an elegant royal blue-indigo curved vector flow representing workspace coordination).
+- **Interactive Login Cards:** Smooth HTML5 overlays handle transitions between Sign In, Sign Up, and Forgot Password states. Session details are cached locally via `localStorage`.
+- **Full-Screen Tagline Splash Animation:** Clicking the **TeamFlow** brand header in the top-left corner of the sidebar triggers a full-screen glassmorphic splash overlay. It displays the tagline `Collaborate. Achieve.` with scaling micro-animations before fading out to return you to the Dashboard.
 
 ---
 
